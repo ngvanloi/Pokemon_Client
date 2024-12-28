@@ -1,0 +1,82 @@
+<div class="p-4 border border-gray-200 rounded-lg shadow-md">
+  <h2 class="text-xl font-semibold mb-4">CSV File Reader</h2>
+  
+  <!-- Input and Save Button -->
+  <div class="flex justify-between items-center mb-4">
+    <input
+      type="file"
+      accept=".csv"
+      (change)="onFileSelected($event)"
+      class="mr-4"
+    />
+    <button
+      (click)="onSave()"
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+    >
+      Save
+    </button>
+  </div>
+  <table
+  class="table-auto w-full border-collapse border border-gray-300 mt-4"
+  *ngIf="pokemonObjects.length"
+>
+  <thead>
+    <tr>
+      <th
+        *ngFor="let header of csvHeaders"
+        class="border border-gray-300 px-4 py-2 bg-gray-200 text-left"
+      >
+        {{ header }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of pokemonObjects">
+      <td class="border border-gray-300 px-4 py-2">
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.name }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.type1 }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.type2 }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.total }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.hp }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.attack }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.defense }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.spAttack }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.spDefense }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.speed }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.generation }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.legendary }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.image }}
+      </td>
+      <td class="border border-gray-300 px-4 py-2">
+        {{ row.ytbUrl }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
