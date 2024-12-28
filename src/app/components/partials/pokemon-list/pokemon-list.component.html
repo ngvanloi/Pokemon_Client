@@ -105,10 +105,16 @@
             <p class="text-sm mb-1">Legendary: {{ pokemon.legendary ? 'Yes' : 'No' }}</p>
             <button
                 class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded-lg mt-2 w-full"
-                (click)="viewPokemonDetails(pokemon.id!)"
+                (click)="viewPokemonDetails(pokemon)"
             >
                 View Details
             </button>
         </div>
     </div>
 </div>
+
+<app-pokemon-modal
+  *ngIf="showModal"
+  [pokemon]="selectedPokemon"
+  (close)="onCloseModal()"
+></app-pokemon-modal>

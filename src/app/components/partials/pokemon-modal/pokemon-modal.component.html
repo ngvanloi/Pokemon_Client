@@ -1,0 +1,55 @@
+<div
+    *ngIf="pokemon"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+>
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl relative">
+        <!-- Close Button -->
+        <button
+            (click)="onClose()"
+            class="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+        >
+            &times;
+        </button>
+
+        <!-- Modal Content -->
+        <div class="flex flex-col md:flex-row items-start gap-6">
+            <!-- Image Section -->
+            <div class="w-full md:w-1/3 relative">
+                <img
+                    [src]="pokemon.image"
+                    alt="{{ pokemon.name }}"
+                    class="w-full h-auto rounded-lg shadow-md"
+                />
+                <button
+                    (click)="toggleFavorite()"
+                    class="absolute top-4 left-4 p-2 rounded-full bg-white shadow hover:bg-gray-200 transition"
+                >
+                    <span
+                        class="material-icons text-red-500"
+                        [class.text-gray-400]="!pokemon.isFavorite"
+                    >
+                        {{ pokemon.isFavorite ? 'favorite' : 'favorite_border' }}
+                    </span>
+                </button>
+            </div>
+
+            <!-- Info Section -->
+            <div class="w-full md:w-2/3">
+                <h2 class="text-2xl font-bold mb-4">{{ pokemon.name }}</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <p><strong>Type 1:</strong> {{ pokemon.type1 }}</p>
+                    <p *ngIf="pokemon.type2"><strong>Type 2:</strong> {{ pokemon.type2 }}</p>
+                    <p><strong>HP:</strong> {{ pokemon.hp }}</p>
+                    <p><strong>Attack:</strong> {{ pokemon.attack }}</p>
+                    <p><strong>Speed:</strong> {{ pokemon.speed }}</p>
+                    <p><strong>Defense:</strong> {{ pokemon.defense }}</p>
+                    <p><strong>Special Attack:</strong> {{ pokemon.spAttack }}</p>
+                    <p><strong>Special Defense:</strong> {{ pokemon.spDefense }}</p>
+                    <p><strong>Generation:</strong> {{ pokemon.generation }}</p>
+                    <p><strong>Legendary:</strong> {{ pokemon.legendary ? 'Yes' : 'No' }}</p>
+                    <p><strong>Total:</strong> {{ pokemon.total }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

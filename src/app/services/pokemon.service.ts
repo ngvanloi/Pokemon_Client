@@ -37,4 +37,12 @@ export class PokemonService {
           return of();
         }));
   }
+
+  updateFavoriteToPokemon(id: string, isFavorite: boolean) {
+    return this.http.patch(`${this.baseUrl}pokemon/${id}`, { isFavorite }).pipe(
+      catchError((error) => {
+        console.error('Failed to update favorite Pokemons from server:', error);
+        return of();
+      }));
+  }
 }

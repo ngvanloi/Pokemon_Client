@@ -9,11 +9,12 @@ import { IType } from '../../../models/type.model';
 import { IFilter } from '../../../models/filter.model';
 import { PaginationComponent } from "../pagination/pagination.component";
 import { ActivatedRoute, Router } from '@angular/router';
+import { PokemonModalComponent } from "../pokemon-modal/pokemon-modal.component";
 
 @Component({
   selector: 'app-pokemon-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, PaginationComponent, PokemonModalComponent],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss'
 })
@@ -35,6 +36,9 @@ export class PokemonListComponent implements OnInit {
   totalPokemons = 0;
   totalPages = 1;
   itemsPerPageOptions = [10, 20, 50, 100];
+
+  selectedPokemon: IPokemon | null = null;
+  showModal = false;
 
   constructor(
     private pokemonService: PokemonService,
@@ -65,7 +69,6 @@ export class PokemonListComponent implements OnInit {
 
   initializeFiltersFromQueryParams(): void {
     this.route.queryParams.subscribe((params) => {
-      // Initialize filters from query params if available
       this.filters.page = +params['page'] || 1;
       this.filters.limit = +params['limit'] || 20;
       this.filters.searchName = params['searchName'] || '';
@@ -90,7 +93,7 @@ export class PokemonListComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams,
-      queryParamsHandling: 'merge', // Merge with existing query params
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -113,9 +116,14 @@ export class PokemonListComponent implements OnInit {
     this.updateQueryParams();
   }
 
-  viewPokemonDetails(id: string): void {
-    // Logic to view details
-    alert(`Viewing details for Pokémon with ID: ${id}`);
+  viewPokemonDetails(pokemon: IPokemon): void {
+    this.selectedPokemon = pokemon;
+    this.showModal = true;
+  }
+
+  onCloseModal(): void {
+    this.showModal = false;
+    this.selectedPokemon = null;
   }
 
   onPageChange(newPage: number): void {

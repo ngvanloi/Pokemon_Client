@@ -19,7 +19,6 @@ export class CsvReaderComponent implements OnInit, OnDestroy {
   types: IType[] = [];
   newTypes: string[] = [];
   csvHeaders: string[] = [];
-  // csvData: any[][] = [];
 
   private unsubscribe$: Subject<void> = new Subject<void>();
 
