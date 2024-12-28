@@ -4,7 +4,8 @@ export interface IFilter {
     sort: string | undefined;
     type: string | undefined;
     isLegendary: boolean;
-    speedRange: number;
+    minSpeed: number;
+    maxSpeed: number;
     searchName: string | undefined;
   }
   
