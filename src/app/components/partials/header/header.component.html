@@ -7,10 +7,14 @@
 
     <!-- Menu -->
     <nav class="hidden md:flex space-x-6">
-      <a href="#" class="hover:text-blue-400">Home</a>
-      <a href="#" class="hover:text-blue-400">About</a>
-      <a href="#" class="hover:text-blue-400">Services</a>
-      <a href="#" class="hover:text-blue-400">Contact</a>
+      <a
+        routerLink="/"
+        class="hover:text-blue-400"
+      >Home</a>
+      <a
+      routerLink="/pokemon"
+        class="hover:text-blue-400"
+      >Pokemon</a>
     </nav>
 
     <!-- Search Bar -->
@@ -21,18 +25,40 @@
         class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
       >
     </div>
-
+    <ng-container *ngIf="(currentUser$ | async) as user">
+      {{user | json}}
+</ng-container>
     <!-- User Info -->
-    <div class="flex items-center space-x-4">
-      <img
-        src="https://i.pinimg.com/1200x/bc/43/98/bc439871417621836a0eeea768d60944.jpg"
-        alt="User Avatar"
-        class="h-8 w-8 rounded-full"
-      >
-      <span class="hidden md:inline">John Doe</span>
-      <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg">
-        Logout
-      </button>
-    </div>
+    <ng-container *ngIf="(currentUser$ | async) as user">
+      <div class="flex items-center space-x-4">
+        <img
+          src="https://i.pinimg.com/1200x/bc/43/98/bc439871417621836a0eeea768d60944.jpg"
+          alt="User Avatar"
+          class="h-8 w-8 rounded-full"
+        >
+        <span class="hidden md:inline">{{user.name}}</span>
+        <button (click)="onLogout()" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg">
+          Logout
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="(currentUser$ | async) === null">
+      <div class="flex items-center space-x-6">
+        <button
+          routerLink="/login"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        >
+          Login
+        </button>
+        <span class="text-gray-600">/</span>
+        <button
+          routerLink="/signup"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        >
+          Sign Up
+        </button>
+      </div>
+    </ng-container>
   </div>
 </header>

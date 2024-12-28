@@ -1,0 +1,71 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Create an Account</h2>
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-4"
+    >
+      <!-- Full Name -->
+      <text-input
+        [control]="registerForm.get('name')"
+        label="Full Name"
+        placeholder="Enter your full name"
+        id="name"
+      ></text-input>
+
+
+      <text-input
+        type="email"
+        [control]="registerForm.get('email')"
+        label="Email"
+        placeholder="Enter your email"
+        id="email"
+      ></text-input>
+
+      <!-- Password -->
+      <text-input
+        type="password"
+        [control]="registerForm.get('password')"
+        label="Password"
+        placeholder="Enter your password"
+        id="password"
+      ></text-input>
+
+      <!-- Confirm Password -->
+      <text-input
+        type="password"
+        [control]="registerForm.get('confirmPassword')"
+        label="Confirm Password"
+        placeholder="Enter your Confirm Password"
+        id="confirmPassword"
+      ></text-input>
+
+      <!-- Error message-->
+      <ul
+        class="text-red-500 list-none"
+        *ngIf="errors"
+      >
+        <li *ngFor="let error of errors">{{ error }}</li>
+      </ul>
+
+      <!-- Signup Button -->
+      <button
+        type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-medium"
+      >
+        Sign up
+      </button>
+    </form>
+
+    <!-- Login Redirect -->
+    <p class="mt-4 text-center text-sm text-gray-600">
+      Already have an account?
+      <a
+        [routerLink]="['/login']"
+        class="text-blue-600 hover:underline"
+      >Login</a>
+    </p>
+  </div>
+</div>

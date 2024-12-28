@@ -1,0 +1,47 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Login to Your Account</h2>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-4"
+    >
+      <!-- Email -->
+      <text-input
+        type="email"
+        [control]="loginForm.get('email')"
+        label="Email"
+        placeholder="Enter your email"
+        id="email"
+      ></text-input>
+
+      <!-- Password -->
+      <text-input
+        type="password"
+        [control]="loginForm.get('password')"
+        label="Password"
+        placeholder="Enter your password"
+        id="password"
+      ></text-input>
+
+      <!-- Login Button -->
+      <button
+        type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-medium"
+      >
+        Login
+      </button>
+    </form>
+
+    <!-- Signup Redirect -->
+    <p class="mt-4 text-center text-sm text-gray-600">
+      Don't have an account?
+      <a
+        [routerLink]="['/signup']"
+        [queryParams]="{returnUrl : returnUrl}"
+        class="text-blue-600 hover:underline"
+      >Sign up</a>
+    </p>
+  </div>
+</div>
