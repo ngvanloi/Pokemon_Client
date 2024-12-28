@@ -3,23 +3,29 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/partials/header/header.component';
 import { FooterComponent } from "./components/partials/footer/footer.component";
 import { UserService } from './services/user.service';
-import { catchError, of, Subject, takeUntil } from 'rxjs';
+import { catchError, Observable, of, Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { LoadingService } from './services/loading.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit, OnDestroy {
+  loading$: Observable<boolean>;
   accessToken: string | null | undefined;
-
   private unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
-    private readonly userService: UserService
-  ) { }
+    private readonly userService: UserService,
+    private loadingService: LoadingService
+  ) {
+    this.loading$ = this.loadingService.loading$;
+
+  }
 
   ngOnInit(): void {
     this.loadCurrentUser();

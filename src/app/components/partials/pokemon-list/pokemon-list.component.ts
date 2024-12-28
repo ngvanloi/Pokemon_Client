@@ -28,7 +28,7 @@ export class PokemonListComponent implements OnInit {
     type: undefined,
     isLegendary: false,
     minSpeed: 0,
-    maxSpeed: 150,
+    maxSpeed: 1000,
     searchName: ''
   }
   searchTerm$ = new Subject<IFilter>();
@@ -75,7 +75,7 @@ export class PokemonListComponent implements OnInit {
       this.filters.type = params['type'] || '';
       this.filters.isLegendary = params['isLegendary'] === 'true';
       this.filters.minSpeed = +params['minSpeed'] || 0;
-      this.filters.maxSpeed = +params['maxSpeed'] || 150;
+      this.filters.maxSpeed = +params['maxSpeed'] || 1000;
     });
   }
 
@@ -114,6 +114,21 @@ export class PokemonListComponent implements OnInit {
   onSearch() {
     this.searchTerm$.next(this.filters);
     this.updateQueryParams();
+  }
+
+  resetFilters() {
+    this.filters = {
+      limit: 20,
+      page: 1,
+      sort: '',
+      searchName: '',
+      type: '',
+      isLegendary: false,
+      minSpeed: 0,
+      maxSpeed: 1000,
+    };
+    this.updateQueryParams();
+    this.searchTerm$.next(this.filters);
   }
 
   viewPokemonDetails(pokemon: IPokemon): void {

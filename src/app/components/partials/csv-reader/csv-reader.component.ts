@@ -6,6 +6,7 @@ import { IType } from '../../../models/type.model';
 import { TypeService } from '../../../services/type.service';
 import { catchError, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PokemonService } from '../../../services/pokemon.service';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-csv-reader',
@@ -26,6 +27,7 @@ export class CsvReaderComponent implements OnInit, OnDestroy {
     private papa: Papa,
     private typeService: TypeService,
     private pokemonService: PokemonService,
+    private loadingService: LoadingService,
   ) { }
 
   ngOnInit(): void {
@@ -38,19 +40,27 @@ export class CsvReaderComponent implements OnInit, OnDestroy {
   }
 
   onFileSelected(event: Event): void {
+    this.loadingService.showLoading();
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) {
+      this.loadingService.hideLoading();
       return;
     }
     const file = input.files[0];
     if (file.type !== 'text/csv') {
       alert('Please upload a valid CSV file.');
+      this.loadingService.hideLoading();
       return;
     }
     const reader = new FileReader();
     reader.onload = () => {
       const csvText = reader.result as string;
       this.parseCSV(csvText);
+      this.loadingService.hideLoading();
+    };
+    reader.onerror = () => {
+      alert('Error reading file.');
+      this.loadingService.hideLoading(); // Hide loading if an error occurs
     };
     reader.readAsText(file);
   }
@@ -67,10 +77,9 @@ export class CsvReaderComponent implements OnInit, OnDestroy {
     });
   }
 
-
   convertToObject(pokemonArray: any[][]): void {
     this.pokemonObjects = pokemonArray.map((item) => ({
-      id:undefined,
+      id: undefined,
       name: item[1],
       type1: this.findOrCreateType(item[2]),
       type2: item[3] ? this.findOrCreateType(item[3]) : undefined,
@@ -110,9 +119,13 @@ export class CsvReaderComponent implements OnInit, OnDestroy {
                 console.log('Pokémons created successfully:', pokemonResult);
               }),
               takeUntil(this.unsubscribe$),
+              catchError((err) => {
+                console.error('Error creating pokémons:', err);
+                return of(null);
+              })
             );
           }
-          return of(null); 
+          return of(null);
         })
       )
       .subscribe({

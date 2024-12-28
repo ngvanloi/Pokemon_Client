@@ -45,4 +45,12 @@ export class PokemonService {
         return of();
       }));
   }
+
+  getPokemonById(id: string) {
+    return this.http.get(`${this.baseUrl}pokemon/${id}`, ).pipe(
+      catchError((error) => {
+        console.error('Failed to retrieve Pokemons from server:', error);
+        return of();
+      }));
+  }
 }
