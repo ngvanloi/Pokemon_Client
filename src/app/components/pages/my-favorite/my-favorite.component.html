@@ -1,0 +1,41 @@
+<div class="h-screen w-full flex justify-center items-center p-6 bg-gray-100">
+    <div class="w-full max-w-6xl p-6 bg-gray-50 rounded-lg shadow-xl">
+        <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-6">My Favorites</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+            <div
+                *ngFor="let pokemon of pokemons"
+                class="border border-gray-300 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 p-6 bg-white flex flex-col"
+            >
+                <img
+                    [src]="pokemon.image"
+                    alt="{{ pokemon.name }}"
+                    class="w-full h-48 object-contain rounded-lg mb-4 shadow-md"
+                />
+                <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center">{{ pokemon.name }}</h3>
+                <p class="text-sm text-gray-600 mb-1">Type 1: <span class="font-medium text-blue-500">{{ pokemon.type1 }}</span></p>
+                <p
+                    *ngIf="pokemon.type2"
+                    class="text-sm text-gray-600 mb-1"
+                >Type 2: <span class="font-medium text-blue-500">{{ pokemon.type2 }}</span></p>
+                <p class="text-sm text-gray-600 mb-1">Speed: <span class="font-medium text-green-500">{{ pokemon.speed }}</span></p>
+                <p class="text-sm text-gray-600 mb-1">Total: <span class="font-medium text-orange-500">{{ pokemon.total }}</span></p>
+                <p class="text-sm text-gray-600 mb-1">Legendary: <span class="font-medium text-red-500">{{ pokemon.legendary ? 'Yes' : 'No' }}</span></p>
+                <div class="mt-auto">
+                    <button
+                        class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg mt-4 w-full transition-colors duration-200"
+                        (click)="viewPokemonDetails(pokemon)"
+                    >
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-pokemon-modal
+    *ngIf="showModal"
+    [pokemon]="selectedPokemon"
+    (close)="onCloseModal()"
+></app-pokemon-modal>

@@ -29,6 +29,22 @@ export class PokemonService {
       }));
   }
 
+  getPokemonById(id: string) {
+    return this.http.get(`${this.baseUrl}pokemon/get-details/${id}`, ).pipe(
+      catchError((error) => {
+        console.error('Failed to retrieve Pokemons from server:', error);
+        return of();
+      }));
+  }
+
+  getAllMyFavoritePokemons(): Observable<IPokemon[]> {
+    return this.http.get<IPokemon[]>(this.baseUrl + "pokemon/my-favorite", ).pipe(
+      catchError((error) => {
+        console.error('Failed to retrieve Pokemons from server:', error);
+        return of();
+      }));
+  }
+
   createManyPokemons(pokemons: IPokemon[]): Observable<void> {
     return this.http.post<void>(this.baseUrl + "pokemon", { pokemons: pokemons })
       .pipe(
@@ -42,14 +58,6 @@ export class PokemonService {
     return this.http.patch(`${this.baseUrl}pokemon/${id}`, { isFavorite }).pipe(
       catchError((error) => {
         console.error('Failed to update favorite Pokemons from server:', error);
-        return of();
-      }));
-  }
-
-  getPokemonById(id: string) {
-    return this.http.get(`${this.baseUrl}pokemon/${id}`, ).pipe(
-      catchError((error) => {
-        console.error('Failed to retrieve Pokemons from server:', error);
         return of();
       }));
   }
