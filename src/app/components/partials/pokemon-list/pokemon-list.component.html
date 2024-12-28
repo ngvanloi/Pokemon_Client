@@ -1,120 +1,123 @@
-<div class="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-lg">
-    <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800">Search Pokemons</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        <!-- Name Search -->
-        <div class="flex flex-col">
-            <label
-                for="name"
-                class="text-lg font-medium text-gray-700 mb-2"
-            >Search by Name</label>
-            <input
-                id="name"
-                type="text"
-                [(ngModel)]="filters.searchName"
-                (ngModelChange)="onSearch()"
-                placeholder="Enter Pokémon name"
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
+<div class="p-8 max-w-5xl mx-auto bg-white rounded-lg shadow-2xl">
+    <h2 class="text-3xl font-extrabold text-center text-gray-900 mb-8">Search Pokemons</h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Name Search -->
+      <div class="flex flex-col">
+        <label for="name" class="text-lg font-medium text-gray-800 mb-2">Search by Name</label>
+        <input
+          id="name"
+          type="text"
+          [(ngModel)]="filters.searchName"
+          (ngModelChange)="onSearch()"
+          placeholder="Enter Pokémon name"
+          class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none text-lg transition-all duration-200"
+        />
+      </div>
+  
+      <!-- Type Dropdown -->
+      <div class="flex flex-col">
+        <label for="type" class="text-lg font-medium text-gray-800 mb-2">Select Type</label>
+        <select
+          id="type"
+          [(ngModel)]="filters.type"
+          (change)="onSearch()"
+          class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none text-lg transition-all duration-200"
+        >
+          <option value="">All Types</option>
+          <option *ngFor="let type of types" [value]="type.name">{{ type.name }}</option>
+        </select>
+      </div>
+  
+      <!-- Legendary Checkbox -->
+      <div class="flex flex-col">
+        <label for="legendary" class="text-lg font-medium text-gray-800 mb-2">Legendary</label>
+        <div class="flex items-center space-x-3">
+          <input
+            id="legendary"
+            type="checkbox"
+            [(ngModel)]="filters.isLegendary"
+            (change)="onSearch()"
+            class="h-6 w-6 text-blue-600 rounded border-gray-300 focus:ring-blue-600 transition-all duration-200"
+          />
+          <label for="legendary" class="text-lg font-medium text-gray-800">Yes</label>
         </div>
-
-        <div class="flex flex-col">
-
-            <!-- Type Dropdown -->
-            <label
-                for="type"
-                class="text-lg font-medium text-gray-700 mb-2"
-            >Select Type</label>
-            <select
-                id="type"
-                [(ngModel)]="filters.type"
-                (change)="onSearch()"
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            >
-                <option value="">All Types</option>
-                <option
-                    *ngFor="let type of types"
-                    [value]="type.name"
-                >{{ type.name }}</option>
-            </select>
+      </div>
+  
+      <!-- Speed Slider -->
+      <div class="flex flex-col col-span-1 sm:col-span-2 lg:col-span-3">
+        <label class="text-lg font-medium text-gray-800 mb-4">Speed Range</label>
+        
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-sm text-gray-600">Min Speed: {{ filters.minSpeed }}</span>
+          <span class="text-sm text-gray-600">Max Speed: {{ filters.maxSpeed }}</span>
         </div>
-        <!-- Legendary Checkbox -->
-
-        <div class="flex items-center space-x-2">
-            <input
-                id="legendary"
-                type="checkbox"
-                [(ngModel)]="filters.isLegendary"
-                (change)="onSearch()"
-                class="h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-            />
-            <label
-                for="legendary"
-                class="text-lg font-medium text-gray-700"
-            >Legendary</label>
+        
+        <div class="space-y-3">
+          <input
+            type="range"
+            [(ngModel)]="filters.minSpeed"
+            [min]="0"
+            [max]="1000"
+            (input)="onSearch()"
+            class="w-full h-3 bg-blue-100 rounded-lg cursor-pointer focus:outline-none transition-all duration-300"
+          />
+          <input
+            type="range"
+            [(ngModel)]="filters.maxSpeed"
+            [min]="0"
+            [max]="1000"
+            (input)="onSearch()"
+            class="w-full h-3 bg-blue-100 rounded-lg cursor-pointer focus:outline-none transition-all duration-300"
+          />
         </div>
-
-        <!-- Speed Slider -->
-        <div class="flex flex-col">
-            <input
-                type="range"
-                [(ngModel)]="filters.minSpeed"
-                [min]="0"
-                [max]="1000"
-                (input)="onSearch()"
-            />
-            <input
-                type="range"
-                [(ngModel)]="filters.maxSpeed"
-                [min]="0"
-                [max]="1000"
-                (input)="onSearch()"
-            />
-            <span>Speed:{{ filters.minSpeed }} - {{ filters.maxSpeed }}</span>
-        </div>
+      </div>
     </div>
-</div>
-<app-pagination
-    [currentPage]="filters.page"
-    [totalPages]="totalPages"
-    [itemsPerPage]="filters.limit"
-    [itemsPerPageOptions]="itemsPerPageOptions"
-    (pageChange)="onPageChange($event)"
-    (itemsPerPageChange)="onItemsPerPageChange($event)"
-></app-pagination>
-<div class="p-4">
-    <h2 class="text-2xl font-bold mb-4">Pokémon Gallery</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  </div>
+  
+<div class="container mx-auto p-6 bg-gray-50 rounded-lg shadow-xl">
+    <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-6">Pokémon Gallery</h2>
+    <app-pagination
+        [currentPage]="filters.page"
+        [totalPages]="totalPages"
+        [itemsPerPage]="filters.limit"
+        [itemsPerPageOptions]="itemsPerPageOptions"
+        (pageChange)="onPageChange($event)"
+        (itemsPerPageChange)="onItemsPerPageChange($event)"
+    ></app-pagination>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
         <div
             *ngFor="let pokemon of pokemons"
-            class="border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-4"
+            class="border border-gray-300 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 p-6 bg-white flex flex-col"
         >
             <img
                 [src]="pokemon.image"
                 alt="{{ pokemon.name }}"
-                class="w-full h-48 object-contain mb-4"
+                class="w-full h-48 object-cover rounded-lg mb-6 shadow-md"
             />
-            <h3 class="text-lg font-semibold mb-2">{{ pokemon.name }}</h3>
-            <p class="text-sm mb-1">Type 1: {{ pokemon.type1 }}</p>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center">{{ pokemon.name }}</h3>
+            <p class="text-sm text-gray-600 mb-1">Type 1: <span class="font-medium text-blue-500">{{ pokemon.type1 }}</span></p>
             <p
-                class="text-sm mb-1"
                 *ngIf="pokemon.type2"
-            >Type 2: {{ pokemon.type2 }}</p>
-
-            <p class="text-sm mb-1">Speed: {{ pokemon.speed }}</p>
-            <p class="text-sm mb-1">Total: {{ pokemon.total }}</p>
-            <p class="text-sm mb-1">Legendary: {{ pokemon.legendary ? 'Yes' : 'No' }}</p>
-            <button
-                class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded-lg mt-2 w-full"
-                (click)="viewPokemonDetails(pokemon)"
-            >
-                View Details
-            </button>
+                class="text-sm text-gray-600 mb-1"
+            >Type 2: <span class="font-medium text-blue-500">{{ pokemon.type2 }}</span></p>
+            <p class="text-sm text-gray-600 mb-1">Speed: <span class="font-medium text-green-500">{{ pokemon.speed }}</span></p>
+            <p class="text-sm text-gray-600 mb-1">Total: <span class="font-medium text-orange-500">{{ pokemon.total }}</span></p>
+            <p class="text-sm text-gray-600 mb-1">Legendary: <span class="font-medium text-red-500">{{ pokemon.legendary ? 'Yes' : 'No' }}</span></p>
+            <div class="mt-auto">
+                <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg mt-4 w-full transition-colors duration-200"
+                    (click)="viewPokemonDetails(pokemon)"
+                >
+                    View Details
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <app-pokemon-modal
-  *ngIf="showModal"
-  [pokemon]="selectedPokemon"
-  (close)="onCloseModal()"
+    *ngIf="showModal"
+    [pokemon]="selectedPokemon"
+    (close)="onCloseModal()"
 ></app-pokemon-modal>
