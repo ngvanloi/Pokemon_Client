@@ -28,29 +28,4 @@ export class TypeService {
           return of();
         }));
   }
-
-  // findOrCreateTypes(typeNames: string[]): Observable<IType[]> {
-  //   const existingTypes = this.types.filter((type) =>
-  //     typeNames.includes(type.name)
-  //   );
-  //   const missingTypes = typeNames.filter(
-  //     (name) => !existingTypes.some((type) => type.name === name)
-  //   );
-
-  //   if (missingTypes.length === 0) {
-  //     return new Observable((observer) => {
-  //       observer.next(existingTypes);
-  //       observer.complete();
-  //     });
-  //   }
-
-  //   return this.http
-  //     .post<IType[]>(this.baseUrl + "type", { names: missingTypes })
-  //     .pipe(
-  //       map((createdTypes) => {
-  //         createdTypes.forEach((type) => this.types.push(type));
-  //         return [...existingTypes, ...createdTypes];
-  //       })
-  //     );
-  // }
 }

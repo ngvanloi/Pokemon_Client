@@ -71,7 +71,14 @@
         </div>
     </div>
 </div>
-
+<app-pagination
+  [currentPage]="filters.page"
+  [totalPages]="totalPages"
+  [itemsPerPage]="filters.limit"
+  [itemsPerPageOptions]="itemsPerPageOptions"
+  (pageChange)="onPageChange($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)"
+></app-pagination>
 <div class="p-4">
     <h2 class="text-2xl font-bold mb-4">Pokémon Gallery</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

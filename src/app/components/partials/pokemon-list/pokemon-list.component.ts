@@ -7,11 +7,12 @@ import { FormsModule } from '@angular/forms';
 import { TypeService } from '../../../services/type.service';
 import { IType } from '../../../models/type.model';
 import { IFilter } from '../../../models/filter.model';
+import { PaginationComponent } from "../pagination/pagination.component";
 
 @Component({
   selector: 'app-pokemon-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss'
 })
@@ -19,8 +20,8 @@ export class PokemonListComponent implements OnInit {
   pokemons: IPokemon[] = [];
   types: IType[] = [];
   filters: IFilter = {
-    limit: 10,
-    page: 0,
+    limit: 20,
+    page: 1,
     sort: undefined,
     type: undefined,
     isLegendary: false,
@@ -29,6 +30,10 @@ export class PokemonListComponent implements OnInit {
   }
   searchTerm$ = new Subject<IFilter>();
 
+  totalPokemons = 0;
+  totalPages = 1;
+  itemsPerPageOptions = [10, 20, 50, 100];
+
   constructor(private pokemonService: PokemonService, private typeService: TypeService) { }
 
   ngOnInit(): void {
@@ -36,12 +41,17 @@ export class PokemonListComponent implements OnInit {
       .pipe(
         debounceTime(300),
         switchMap((filters) => {
-          return this.pokemonService.getAllPokemons(filters);
+          return this.pokemonService.getAllPokemons(filters)
+            .pipe(
+              tap((res: any) => {
+                this.pokemons = res.data;
+                this.totalPokemons = res.total;
+                this.totalPages = res.totalPage;
+              })
+            );
         })
       )
-      .subscribe((res: any) => {
-        this.pokemons = res.data;
-      });
+      .subscribe();
 
     this.loadTypes();
     this.loadPokemons();
@@ -68,6 +78,18 @@ export class PokemonListComponent implements OnInit {
   viewPokemonDetails(id: string): void {
     // Logic to view details
     alert(`Viewing details for Pokémon with ID: ${id}`);
+  }
+
+  onPageChange(newPage: number): void {
+    this.filters.page = newPage;
+    this.searchTerm$.next(this.filters);
+
+  }
+
+  onItemsPerPageChange(newItemsPerPage: number): void {
+    this.filters.limit = newItemsPerPage;
+    this.filters.page = 1; // Reset to the first page
+    this.searchTerm$.next(this.filters);
   }
 
 }

@@ -1,0 +1,32 @@
+<div class="flex justify-between items-center my-4">
+    <!-- Dropdown for items per page -->
+    <select
+      [(ngModel)]="itemsPerPage"
+      (change)="onItemsPerPageChange()"
+      class="border rounded px-2 py-1"
+    >
+      <option *ngFor="let option of itemsPerPageOptions" [value]="option">
+        {{ option }} per page
+      </option>
+    </select>
+  
+    <!-- Pagination controls -->
+    <div class="flex space-x-2">
+      <button
+        (click)="changePage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+        class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+      >
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button
+        (click)="changePage(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+        class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+  
