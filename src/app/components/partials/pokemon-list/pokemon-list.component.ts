@@ -8,6 +8,7 @@ import { TypeService } from '../../../services/type.service';
 import { IType } from '../../../models/type.model';
 import { IFilter } from '../../../models/filter.model';
 import { PaginationComponent } from "../pagination/pagination.component";
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -34,7 +35,11 @@ export class PokemonListComponent implements OnInit {
   totalPages = 1;
   itemsPerPageOptions = [10, 20, 50, 100];
 
-  constructor(private pokemonService: PokemonService, private typeService: TypeService) { }
+  constructor(
+    private pokemonService: PokemonService,
+    private typeService: TypeService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.searchTerm$
@@ -52,9 +57,42 @@ export class PokemonListComponent implements OnInit {
         })
       )
       .subscribe();
-
+    this.initializeFiltersFromQueryParams();
     this.loadTypes();
     this.loadPokemons();
+  }
+
+  initializeFiltersFromQueryParams(): void {
+    this.route.queryParams.subscribe((params) => {
+      // Initialize filters from query params if available
+      this.filters.page = +params['page'] || 1;
+      this.filters.limit = +params['limit'] || 20;
+      this.filters.searchName = params['searchName'] || '';
+      this.filters.type = params['type'] || '';
+      this.filters.isLegendary = params['isLegendary'] === 'true';
+      // this.filters.speedRange = params['speedRange']
+      //   ? params['speedRange'].split(',').map(Number)
+      //   : [0, 150];
+    });
+  }
+
+  updateQueryParams(): void {
+    const queryParams = {
+      page: this.filters.page,
+      limit: this.filters.limit,
+      searchName: this.filters.searchName || undefined,
+      type: this.filters.type || undefined,
+      isLegendary: this.filters.isLegendary ? 'true' : undefined,
+      // speedRange: this.filters.speedRange
+      //   ? this.filters.speedRange.join(',')
+      //   : undefined,
+    };
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge', // Merge with existing query params
+    });
   }
 
   loadTypes(): void {
@@ -73,6 +111,7 @@ export class PokemonListComponent implements OnInit {
 
   onSearch() {
     this.searchTerm$.next(this.filters);
+    this.updateQueryParams();
   }
 
   viewPokemonDetails(id: string): void {
@@ -82,6 +121,7 @@ export class PokemonListComponent implements OnInit {
 
   onPageChange(newPage: number): void {
     this.filters.page = newPage;
+    this.updateQueryParams();
     this.searchTerm$.next(this.filters);
 
   }
@@ -89,6 +129,7 @@ export class PokemonListComponent implements OnInit {
   onItemsPerPageChange(newItemsPerPage: number): void {
     this.filters.limit = newItemsPerPage;
     this.filters.page = 1; // Reset to the first page
+    this.updateQueryParams();
     this.searchTerm$.next(this.filters);
   }
 
