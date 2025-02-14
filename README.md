@@ -1,4 +1,3 @@
-```markdown
 # Frontend Angular 18 Application
 
 A web application built using Angular 18 that displays a responsive interface with modern features. This application fetches data from a backend API and displays it in an intuitive user-friendly design. It uses Angular CLI, RxJS for handling asynchronous data, and Tailwind CSS for styling.
